@@ -34,6 +34,14 @@ return [
         'linkedin' => env('SITE_LINKEDIN_URL'),
     ],
 
+    // Passwords for the demo accounts created by "php artisan db:seed".
+    // Locally both are "password". On the public demo (Render) ADMIN_PASSWORD
+    // is a random secret, so visitors can't log in as admin.
+    'demo' => [
+        'admin_password' => env('ADMIN_PASSWORD', 'password'),
+        'owner_password' => env('DEMO_OWNER_PASSWORD', 'password'),
+    ],
+
     // Currency symbol used when formatting prices
     'currency' => '৳',
 

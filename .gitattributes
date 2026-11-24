@@ -9,3 +9,6 @@
 CHANGELOG.md export-ignore
 README.md export-ignore
 .github/workflows/browser-tests.yml export-ignore
+
+# Shell scripts run inside Linux containers: always LF line endings
+*.sh text eol=lf

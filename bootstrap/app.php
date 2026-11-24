@@ -19,6 +19,10 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
+        // Hosting platforms like Render put the app behind a proxy that handles
+        // HTTPS. Trusting it makes Laravel build https:// links and asset URLs.
+        $middleware->trustProxies(at: '*');
+
         // Short names for middleware used in routes/*.php
         $middleware->alias([
             'admin' => EnsureUserIsAdmin::class,

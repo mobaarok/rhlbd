@@ -1,0 +1,65 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Render "Blueprint": tells Render how to run the public demo.
+# In the Render dashboard: New → Blueprint → pick this GitHub repository.
+#
+# Free plan notes:
+#  - The site sleeps after 15 minutes without visitors; the next visit takes
+#    about a minute to wake it up.
+#  - The demo database is rebuilt on every start (docker/entrypoint.d/60-rhlbd-demo.sh).
+# ─────────────────────────────────────────────────────────────────────────────
+services:
+  - type: web
+    name: rhlbd-demo
+    runtime: docker
+    plan: free
+    region: singapore # closest Render region to Bangladesh
+    branch: main
+    healthCheckPath: /up
+    envVars:
+      # App
+      - key: APP_NAME
+        value: RHLBD.COM
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: "false"
+      - key: APP_LOCALE
+        value: en
+      # Nginx in the container listens on 8080
+      - key: PORT
+        value: "8080"
+
+      # Database: SQLite file inside the container (rebuilt on every start)
+      - key: DB_CONNECTION
+        value: sqlite
+      - key: SESSION_DRIVER
+        value: database
+      - key: CACHE_STORE
+        value: database
+      - key: QUEUE_CONNECTION
+        value: sync
+      - key: FILESYSTEM_DISK
+        value: public
+
+      # Logs and e-mails go to Render's "Logs" tab (no real e-mails sent)
+      - key: LOG_CHANNEL
+        value: stderr
+      - key: MAIL_MAILER
+        value: log
+
+      # Demo logins: the admin password is a random secret that only you can
+      # see in Render → rhlbd-demo → Environment. The owner keeps "password".
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: DEMO_OWNER_PASSWORD
+        value: password
+
+      # Business details shown on the website (edit in the Render dashboard)
+      - key: SITE_PHONE
+        value: "+8801700000000"
+      - key: SITE_WHATSAPP
+        value: "8801700000000"
+      - key: SITE_EMAIL
+        value: hello@rhlbd.com
+      - key: SITE_ADDRESS
+        value: Gulshan-1, Dhaka-1212, Bangladesh
