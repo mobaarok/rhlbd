@@ -92,7 +92,13 @@ export type SiteSettings = {
     whatsapp: string;
     email: string;
     address: string;
-    facebook_url: string | null;
+    /** Social media page URLs (null = not set yet) */
+    social: {
+        facebook: string | null;
+        instagram: string | null;
+        youtube: string | null;
+        linkedin: string | null;
+    };
     currency: string;
 };
 

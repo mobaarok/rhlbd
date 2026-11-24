@@ -25,7 +25,14 @@ return [
 
     'address' => env('SITE_ADDRESS', 'Gulshan, Dhaka, Bangladesh'),
 
-    'facebook_url' => env('SITE_FACEBOOK_URL'),
+    // Social media pages shown as icons in the footer.
+    // Leave a value empty in .env and its icon is still shown, but not clickable.
+    'social' => [
+        'facebook' => env('SITE_FACEBOOK_URL'),
+        'instagram' => env('SITE_INSTAGRAM_URL'),
+        'youtube' => env('SITE_YOUTUBE_URL'),
+        'linkedin' => env('SITE_LINKEDIN_URL'),
+    ],
 
     // Currency symbol used when formatting prices
     'currency' => '৳',

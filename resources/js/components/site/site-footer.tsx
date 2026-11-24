@@ -1,5 +1,15 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
-import { ArrowRight, Facebook, Mail, MapPin, Phone } from 'lucide-react';
+import {
+    ArrowRight,
+    Facebook,
+    Instagram,
+    Linkedin,
+    Mail,
+    MapPin,
+    Phone,
+    Youtube,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import type { FormEvent } from 'react';
 import AppLogoIcon from '@/components/app-logo-icon';
 import InputError from '@/components/input-error';
@@ -10,6 +20,19 @@ import { show as areaPage } from '@/routes/areas';
 import { show as contact } from '@/routes/contact';
 import { index as properties } from '@/routes/properties';
 import { store as subscribe } from '@/routes/subscribers';
+import type { SiteSettings } from '@/types';
+
+/** Social media icons in the footer, in display order (keys match config/site.php "social"). */
+const SOCIAL_LINKS: {
+    key: keyof SiteSettings['social'];
+    label: string;
+    icon: LucideIcon;
+}[] = [
+    { key: 'facebook', label: 'Facebook', icon: Facebook },
+    { key: 'instagram', label: 'Instagram', icon: Instagram },
+    { key: 'youtube', label: 'YouTube', icon: Youtube },
+    { key: 'linkedin', label: 'LinkedIn', icon: Linkedin },
+];
 
 /**
  * Bottom section of every public page: newsletter, links and contact details.
@@ -84,17 +107,36 @@ export function SiteFooter() {
                         Verified properties, expert guidance and hassle-free
                         renting.
                     </p>
-                    {site.facebook_url && (
-                        <a
-                            href={site.facebook_url}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="mt-4 inline-flex size-9 items-center justify-center rounded-full bg-white/10 hover:bg-white/20"
-                            aria-label="Facebook"
-                        >
-                            <Facebook className="size-4" />
-                        </a>
-                    )}
+                    {/* Social media icons (URLs come from SITE_*_URL in .env) */}
+                    <div className="mt-5 flex gap-2">
+                        {SOCIAL_LINKS.map(({ key, label, icon: Icon }) => {
+                            const url = site.social[key];
+                            const className =
+                                'inline-flex size-9 items-center justify-center rounded-full bg-white/10 transition-colors hover:bg-gold hover:text-gold-foreground';
+
+                            // No link set yet: show the icon, but don't make it clickable
+                            return url ? (
+                                <a
+                                    key={key}
+                                    href={url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    aria-label={label}
+                                    className={className}
+                                >
+                                    <Icon className="size-4" />
+                                </a>
+                            ) : (
+                                <span
+                                    key={key}
+                                    title={label}
+                                    className={className}
+                                >
+                                    <Icon className="size-4" />
+                                </span>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 <FooterColumn title="Explore">
